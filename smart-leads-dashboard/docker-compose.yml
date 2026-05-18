@@ -1,0 +1,48 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: smartleads-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - smartleads-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smartleads-backend
+    restart: unless-stopped
+    ports:
+      - '5000:5000'
+    env_file:
+      - ./backend/.env
+    environment:
+      MONGO_URI: mongodb://mongo:27017/smartleads
+    depends_on:
+      - mongo
+    networks:
+      - smartleads-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smartleads-frontend
+    restart: unless-stopped
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend
+    networks:
+      - smartleads-network
+
+volumes:
+  mongo_data:
+
+networks:
+  smartleads-network:
+    driver: bridge
