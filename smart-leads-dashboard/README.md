@@ -86,6 +86,74 @@ smart-leads-dashboard/
 
 ---
 
+## Deploy to Production (Vercel + Railway)
+
+### Architecture
+- **Frontend** → [Vercel](https://vercel.com) (free, global CDN, perfect for Vite/React)
+- **Backend** → [Railway](https://railway.app) (free tier, runs Express natively)
+- **Database** → [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (free M0 cluster — already configured)
+
+---
+
+### Step 1 — Deploy Backend to Railway
+
+1. Go to [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
+2. Select `sohel87399/gigflow` → set **Root Directory** to `smart-leads-dashboard/backend`
+3. Railway auto-detects `railway.json` and runs `npm install && npm run build` then `npm start`
+4. Set these environment variables in Railway dashboard:
+
+| Variable | Value |
+|---|---|
+| `NODE_ENV` | `production` |
+| `PORT` | `5000` |
+| `MONGO_URI` | `mongodb+srv://239x1a3365_db_user:PMRbyKrsghTeDyxS@cluster0.onkwujn.mongodb.net/smartleads?retryWrites=true&w=majority&appName=Cluster0` |
+| `JWT_SECRET` | *(generate a strong random string)* |
+| `JWT_EXPIRES_IN` | `7d` |
+| `BCRYPT_SALT_ROUNDS` | `12` |
+| `CORS_ORIGIN` | *(your Vercel frontend URL — set after Step 2)* |
+
+5. Copy your Railway backend URL e.g. `https://smartleads-backend.up.railway.app`
+
+---
+
+### Step 2 — Deploy Frontend to Vercel
+
+1. Go to [vercel.com](https://vercel.com) → **Add New Project** → Import `sohel87399/gigflow`
+2. Set **Root Directory** to `smart-leads-dashboard/frontend`
+3. Vercel auto-detects `vercel.json` (Vite framework, `dist` output, SPA rewrites)
+4. Add this environment variable before deploying:
+
+| Variable | Value |
+|---|---|
+| `VITE_API_BASE_URL` | `https://your-backend.up.railway.app/api` |
+
+5. Click **Deploy** — your frontend URL will be e.g. `https://smartleads-frontend.vercel.app`
+
+---
+
+### Step 3 — Wire CORS
+
+Go back to Railway → backend service → update `CORS_ORIGIN` to your Vercel URL:
+```
+CORS_ORIGIN=https://smartleads-frontend.vercel.app
+```
+Railway will auto-redeploy.
+
+---
+
+### Step 4 — Seed demo data (optional)
+
+Railway dashboard → backend service → **Shell** tab:
+```bash
+npm run seed
+```
+
+Demo credentials:
+- **Admin:** `admin@demo.com` / `Admin@123`
+- **Sales:** `sales@demo.com` / `Sales@123`
+
+---
+
 ## Deploy to Render
 
 ### Prerequisites
