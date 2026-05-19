@@ -2,12 +2,9 @@ import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/auth.service';
 import { RegisterInput, LoginInput } from '../schemas/auth.schema';
 import { ApiResponse } from '../types';
+import { asyncHandler } from '../utils/asyncHandler';
 
-/**
- * POST /api/auth/register
- * Registers a new user and returns a JWT token.
- */
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const input = req.body as RegisterInput;
   const result = await registerUser(input);
 
@@ -18,13 +15,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   };
 
   res.status(201).json(response);
-};
+});
 
-/**
- * POST /api/auth/login
- * Authenticates a user and returns a JWT token.
- */
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const input = req.body as LoginInput;
   const result = await loginUser(input);
 
@@ -35,4 +28,4 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   };
 
   res.status(200).json(response);
-};
+});

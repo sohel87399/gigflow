@@ -1,29 +1,22 @@
-import 'express-async-errors';
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import router from './routes';
 import { errorMiddleware, AppError } from './middleware/error.middleware';
 
 const app: Application = express();
 
-// ── Security & utility middleware ─────────────────────────────────────────────
+// ── Security middleware ───────────────────────────────────────────────────────
 app.use(helmet());
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN ?? 'http://localhost:3000',
+    origin: process.env.CORS_ORIGIN ?? '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
-
-// HTTP request logging (skip in test environment)
-if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('dev'));
-}
 
 // Body parsers
 app.use(express.json({ limit: '10mb' }));
