@@ -86,6 +86,55 @@ smart-leads-dashboard/
 
 ---
 
+## Deploy to Render
+
+### Prerequisites
+- A [Render](https://render.com) account
+- A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) free cluster (M0)
+
+### Steps
+
+**1. Set up MongoDB Atlas**
+- Create a free M0 cluster at [cloud.mongodb.com](https://cloud.mongodb.com)
+- Create a database user (username + password)
+- Under **Network Access**, add `0.0.0.0/0` to allow connections from Render
+- Copy your connection string: `mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/smartleads`
+
+**2. Push to GitHub**
+```bash
+git add .
+git commit -m "chore: add render deployment config"
+git push
+```
+
+**3. Deploy on Render**
+- Go to [dashboard.render.com](https://dashboard.render.com) → **New** → **Blueprint**
+- Connect your GitHub repo — Render will detect `render.yaml` automatically
+- It will create two services: `smartleads-backend` and `smartleads-frontend`
+
+**4. Set environment variables**
+
+For **smartleads-backend**, set these in the Render dashboard:
+| Variable | Value |
+|---|---|
+| `MONGO_URI` | Your MongoDB Atlas connection string |
+| `CORS_ORIGIN` | Your frontend URL e.g. `https://smartleads-frontend.onrender.com` |
+
+For **smartleads-frontend**, set:
+| Variable | Value |
+|---|---|
+| `VITE_API_BASE_URL` | Your backend URL e.g. `https://smartleads-backend.onrender.com/api` |
+
+> **Note:** `VITE_API_BASE_URL` is a Vite build-time variable. After setting it, trigger a manual redeploy of the frontend service so it gets baked into the bundle.
+
+**5. Seed demo data (optional)**
+In the Render dashboard → `smartleads-backend` → **Shell**:
+```bash
+npm run seed
+```
+
+---
+
 ## Quick Start (Docker)
 
 **Prerequisites:** Docker and Docker Compose installed.

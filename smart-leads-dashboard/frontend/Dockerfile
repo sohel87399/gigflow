@@ -8,6 +8,10 @@ RUN npm install
 
 COPY . .
 
+# Accept the API URL at build time (Vite bakes it into the bundle)
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 RUN npm run build
 
 FROM nginx:alpine
