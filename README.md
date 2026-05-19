@@ -88,19 +88,9 @@ smart-leads-dashboard/
 
 ## Deploy to Production (Vercel + Railway)
 
-### Architecture
-- **Frontend** → [Vercel](https://vercel.com) (free, global CDN, perfect for Vite/React)
-- **Backend** → [Railway](https://railway.app) (free tier, runs Express natively)
-- **Database** → [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (free M0 cluster — already configured)
 
 ---
 
-### Step 1 — Deploy Backend to Railway
-
-1. Go to [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
-2. Select `sohel87399/gigflow` → set **Root Directory** to `smart-leads-dashboard/backend`
-3. Railway auto-detects `railway.json` and runs `npm install && npm run build` then `npm start`
-4. Set these environment variables in Railway dashboard:
 
 | Variable | Value |
 |---|---|
