@@ -13,7 +13,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        sync: false
+        value: mongodb+srv://239x1a3365_db_user:PMRbyKrsghTeDyxS@cluster0.onkwujn.mongodb.net/smartleads?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRES_IN
