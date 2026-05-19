@@ -203,7 +203,85 @@ npm run seed
 
 ---
 
-## Quick Start (Docker)
+## Quick Start (Local — Docker)
+
+The fastest way to run locally. Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/sohel87399/gigflow.git
+cd gigflow/smart-leads-dashboard
+
+# 2. Create backend env file
+copy .env.example backend\.env
+# Edit backend/.env — the defaults work as-is for local Docker
+
+# 3. Create frontend env file
+copy frontend\.env.example frontend\.env
+# VITE_API_BASE_URL=http://localhost:5000/api  ← already set correctly
+
+# 4. Start everything
+docker compose up --build
+
+# 5. Seed demo data (first time only)
+docker compose exec backend npm run seed
+```
+
+Services:
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:5000/api
+- **MongoDB:** localhost:27017
+
+Demo login:
+- Admin: `admin@demo.com` / `Admin@123`
+- Sales: `sales@demo.com` / `Sales@123`
+
+---
+
+## Quick Start (Local — Manual, no Docker)
+
+Requires Node.js 20+ and a running MongoDB instance (local or Atlas).
+
+### Backend
+
+```bash
+cd smart-leads-dashboard/backend
+
+# Install dependencies
+npm install
+
+# Create env file
+copy .env.example .env
+# Edit .env — set MONGO_URI to your MongoDB connection string
+
+# Run in dev mode (hot reload)
+npm run dev
+
+# Seed demo data (optional)
+npm run seed
+```
+
+Backend runs at: http://localhost:5000
+
+### Frontend
+
+```bash
+cd smart-leads-dashboard/frontend
+
+# Install dependencies
+npm install
+
+# Create env file
+copy .env.example .env
+# VITE_API_BASE_URL=http://localhost:5000/api  ← already correct
+
+# Run dev server
+npm run dev
+```
+
+Frontend runs at: http://localhost:5173
+
+---
 
 **Prerequisites:** Docker and Docker Compose installed.
 
