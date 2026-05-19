@@ -14,6 +14,7 @@ interface AuthActions {
   login: (user: User, token: string) => void;
   logout: () => void;
   hydrate: () => void;
+  updateUser: (user: User) => void;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -57,5 +58,13 @@ export const useAuthStore = create<AuthStore>((set) => ({
         localStorage.removeItem(STORAGE_KEY_USER);
       }
     }
+  },
+
+  /**
+   * Updates the stored user object (e.g. after a profile update).
+   */
+  updateUser: (user: User) => {
+    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user));
+    set({ user });
   },
 }));

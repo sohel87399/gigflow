@@ -7,6 +7,10 @@ import { useUiStore } from '@/store/uiStore';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import DashboardPage from '@/pages/DashboardPage';
+import LeadsPage from '@/pages/LeadsPage';
+import AnalyticsPage from '@/pages/AnalyticsPage';
+import ReportsPage from '@/pages/ReportsPage';
+import SettingsPage from '@/pages/SettingsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +37,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 
 export const App = () => {
   const { hydrate } = useAuthStore();
-  const { hydrateDarkMode } = useUiStore();
+  useUiStore();
 
   // Rehydrate persisted state on mount — always dark
   useEffect(() => {
@@ -71,6 +75,42 @@ export const App = () => {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/leads"
+            element={
+              <ProtectedRoute>
+                <LeadsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <AnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute>
+                <ReportsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
               </ProtectedRoute>
             }
           />
